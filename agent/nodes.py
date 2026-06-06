@@ -2,10 +2,9 @@ from __future__ import annotations
 
 import asyncio
 from datetime import datetime
-from typing import Annotated, Any, TypedDict
+from typing import Any
 
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
-from langgraph.graph import add_messages
 
 from agent.llm import call_llm, call_structured_llm
 from agent.prompts import (
@@ -15,17 +14,9 @@ from agent.prompts import (
     build_response_prompt,
     build_response_system_prompt,
 )
+from agent.state import AgentState
 from agent.tools import fetch_weather, geocode
 from utils.time_utils import current_datetime_str
-
-
-class AgentState(TypedDict, total=False):
-    messages: Annotated[list[BaseMessage], add_messages]
-    parsed: dict[str, Any]
-    weather_data: dict[str, Any]
-    tool_trace: list[Any]
-    response: str
-
 
 GREETING_KEYWORDS = {
     "hello",
@@ -298,7 +289,9 @@ def _format_hourly_response(weather_data: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def _current_summary(location_name: str, details: list[str], current: dict[str, Any]) -> str:
+def _current_summary(
+    location_name: str, details: list[str], current: dict[str, Any]
+) -> str:
     if details == ["temperature"]:
         value = current.get("temperature_2m")
         if isinstance(value, (int, float)):
@@ -650,7 +643,10 @@ async def generate_response(state: AgentState) -> AgentState:
                     "response": final_response,
                 }
 
-    if isinstance(weather_data.get("current"), dict) and weather_data.get("_forecast_granularity") != "hourly":
+    if (
+        isinstance(weather_data.get("current"), dict)
+        and weather_data.get("_forecast_granularity") != "hourly"
+    ):
         final_response = _format_current_response(weather_data)
         if final_response:
             return {
@@ -673,9 +669,7 @@ async def generate_response(state: AgentState) -> AgentState:
     try:
         final_response = await call_llm(prompt_messages)
     except Exception:
-        final_response = (
-            "I wasn't able to complete the weather lookup right now. Please try again shortly."
-        )
+        final_response = "I wasn't able to complete the weather lookup right now. Please try again shortly."
 
     return {
         **state,

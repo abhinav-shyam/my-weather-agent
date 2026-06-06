@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import pytest
-from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage
 
-from agent.nodes import AgentState
+from agent.state import AgentState
 
 
 @pytest.fixture
@@ -108,9 +108,7 @@ def hourly_data_fixture() -> dict:
         "_requested_details": ["temperature", "precipitation"],
         "_time_of_day": "all_day",
         "hourly": {
-            "time": [
-                f"2026-06-06T{h:02d}:00" for h in range(24)
-            ],
+            "time": [f"2026-06-06T{h:02d}:00" for h in range(24)],
             "temperature_2m": list(range(15, 28)) + list(range(27, 14, -1)),
             "apparent_temperature": list(range(14, 27)) + list(range(26, 13, -1)),
             "precipitation_probability": [0] * 8 + [10] * 4 + [20] * 4 + [15] * 8,

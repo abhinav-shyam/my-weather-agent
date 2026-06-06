@@ -3,12 +3,12 @@ from __future__ import annotations
 from langgraph.graph import END, StateGraph
 
 from agent.nodes import (
-    AgentState,
     fetch_weather_node,
     generate_response,
     handle_non_weather,
     parse_intent,
 )
+from agent.state import AgentState
 
 
 def _route_after_parse(state: AgentState) -> str:

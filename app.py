@@ -9,7 +9,7 @@ import streamlit as st
 from langchain_core.messages import AIMessage, HumanMessage
 
 from agent.graph import weather_agent
-from agent.nodes import AgentState
+from agent.state import AgentState
 
 
 def stream_response(text: str) -> Generator[str, None, None]:
