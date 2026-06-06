@@ -1,0 +1,33 @@
+# Env files
+.env
+.env.*
+!.env.example
+
+# Virtual envs
+.venv/
+venv/
+
+# Python cache/build
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Streamlit local config/secrets
+.streamlit/
+!.streamlit/config.toml
+
+# IDE/editor
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# My planning files
+weather-agent.md
+weather-agent-phase-a.md
