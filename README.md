@@ -165,7 +165,3 @@ Phase B is planned for persistent history, threads, and deployment support.
 - Sidebar thread management
 - Docker support
 - Deployment-ready production setup
-
-## License
-
-Add a license for this project if you plan to publish or share it publicly.
